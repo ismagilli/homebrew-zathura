@@ -1,8 +1,14 @@
 class ZathuraPs < Formula
   desc "Postscript backend plugin for zathura"
   homepage "https://pwmt.org/projects/zathura-ps/"
-  url "https://github.com/pwmt/zathura-ps/archive/0.2.6.tar.gz"
-  sha256 "08c1927bfb8a40e201fa3638f9523d4b6d70e3444ef070bd4aa8a869b6574567"
+  url "https://github.com/pwmt/zathura-ps/archive/refs/tags/0.2.8.tar.gz"
+  sha256 "b8b42c4517e4bdaee4c84c1c6e7298cabf00fc40b9b95f59feee0f61fe780b54"
+  license "Zlib"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
@@ -12,7 +18,7 @@ class ZathuraPs < Formula
   depends_on "zathura"
 
   def install
-    inreplace "meson.build", "zathura.get_pkgconfig_variable('plugindir')", "'#{prefix}'"
+    inreplace "meson.build", "zathura.get_variable(pkgconfig: 'plugindir')", "'#{prefix}'"
     mkdir "build" do
       system "meson", *std_meson_args, ".."
       system "ninja"
