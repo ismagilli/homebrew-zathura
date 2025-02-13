@@ -1,8 +1,14 @@
 class ZathuraDjvu < Formula
   desc "DJVU plugin for zathura"
   homepage "https://pwmt.org/projects/zathura-djvu/"
-  url "https://github.com/pwmt/zathura-djvu/archive/0.2.9.tar.gz"
-  sha256 "84fae6da42e7cdc2e49ed4cd4f0315ac09716e95358b9c7487803a2cff47dbca"
+  url "https://github.com/pwmt/zathura-djvu/archive/refs/tags/0.2.10.tar.gz"
+  sha256 "3749fe9da14c5cbd13598c83f2dbff9c1c1d906797139fc809ef256f8075c987"
+  license "Zlib"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
@@ -12,7 +18,7 @@ class ZathuraDjvu < Formula
   depends_on "zathura"
 
   def install
-    inreplace "meson.build", "zathura.get_pkgconfig_variable('plugindir')", "'#{prefix}'"
+    inreplace "meson.build", "zathura.get_variable(pkgconfig: 'plugindir')", "'#{prefix}'"
     mkdir "build" do
       system "meson", *std_meson_args, ".."
       system "ninja"

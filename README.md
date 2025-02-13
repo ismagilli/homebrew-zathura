@@ -5,7 +5,6 @@ Homebrew formulae to install zathura and plugins on Mac OS X
 ## Installation steps
 
 ### Tap this repository
-
 ```sh
 brew tap homebrew-zathura/zathura
 ```
@@ -13,6 +12,11 @@ brew tap homebrew-zathura/zathura
 ### Install zathura
 ```sh
 brew install zathura
+```
+
+With Synctex:
+```sh
+brew install zathura --with-synctex
 ```
 
 ### Install and link one of the two plugins
@@ -35,7 +39,6 @@ ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zath
 
 The OSX native integration (dock, window manager) has been added to the develop branch of zathura.
 You can install it by
-
 ```sh
 # unlink installed zathura and girara
 brew unlink girara
@@ -50,7 +53,6 @@ ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix 
 
 ### Copying to clipboard
 Add the following to your `~/.config/zathura/zathurarc`:
-
 ```sh
 set selection-clipboard clipboard
 ```
@@ -61,20 +63,19 @@ Thanks to [geigi](https://github.com/geigi) (see [#5](https://github.com/zegervd
 If you are seeing errors like this:
 
 ```sh
-error: Can not copy to temporary file: Operation not supported
+# error: Can not copy to temporary file: Operation not supported
 ```
 
 Try using an absolute path to the document:
-
 ```sh
-$ zathura document.pdf
-error: Can not copy to temporary file: Operation not supported
+zathura document.pdf
+# error: Can not copy to temporary file: Operation not supported
+
 # Try:
-$ zathura /path/to/document.pdf
+zathura /path/to/document.pdf
 ```
 
 ## Known Issues
-Currently plugins are installed in the zathura folder, which means that uninstalling a plugin does not work. 
+Currently plugins are installed in the zathura folder, which means that uninstalling a plugin does not work.
 
 Work on frameless windows and an improved app bundle experience are coming in the future.
-

@@ -1,9 +1,14 @@
 class ZathuraPdfMupdf < Formula
   desc "MuPDF backend plugin for zathura"
   homepage "https://pwmt.org/projects/zathura-pdf-mupdf/"
-  url "https://github.com/pwmt/zathura-pdf-mupdf/archive/0.3.9.tar.gz"
-  sha256 "05a6f22244c054a90f89ea2f746ea45ebaceb6c0559bfa4dcfd120c4d485346c"
-  revision 1
+  url "https://github.com/pwmt/zathura-pdf-mupdf/archive/refs/tags/0.4.4.tar.gz"
+  sha256 "90bdc7c0d4b5f6bd7b17f9c3832ae5eb8465b45d78ab3b8c2fca26ed45ed1177"
+  license "Zlib"
+
+  livecheck do
+    url :stable
+    regex(/^v?(\d+(?:\.\d+)+)$/i)
+  end
 
   depends_on "cmake" => :build
   depends_on "meson" => :build
@@ -13,7 +18,7 @@ class ZathuraPdfMupdf < Formula
   depends_on "zathura"
 
   def install
-    inreplace "meson.build", "zathura.get_pkgconfig_variable('plugindir')", "prefix"
+    inreplace "meson.build", "zathura.get_variable(pkgconfig: 'plugindir')", "prefix"
     mkdir "build" do
       system "meson", *std_meson_args, ".."
       system "ninja"
