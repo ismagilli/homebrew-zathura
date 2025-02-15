@@ -1,32 +1,23 @@
 # Zathura
+Homebrew formulae to install zathura and pdf plugins on MacOS.
 
-Homebrew formulae to install zathura and plugins on Mac OS X
-
-## Installation steps
-
-### Tap this repository
+## Tap this repository
 ```sh
 brew tap homebrew-zathura/zathura
 ```
 
-### Install zathura
+## Install zathura
 ```sh
 brew install zathura
 ```
 
-With Synctex:
+(or Optionally) with Synctex:
 ```sh
 brew install zathura --with-synctex
 ```
 
 ### Install and link one of the two plugins
-
-For poppler:
-```sh
-brew install zathura-pdf-poppler
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
-```
+In order to render PDFs, `zathura` requires either `mupdf` or `poppler`. 
 
 For mupdf:
 ```sh
@@ -35,47 +26,36 @@ mkdir -p $(brew --prefix zathura)/lib/zathura
 ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
 ```
 
-### OSX_native_integration
-
-The OSX native integration (dock, window manager) has been added to the develop branch of zathura.
-You can install it by
+For poppler:
 ```sh
-# unlink installed zathura and girara
-brew unlink girara
-brew unlink zathura
-
-# install HEAD
-brew install girara --HEAD
-brew install zathura --HEAD
+brew install zathura-pdf-poppler
 mkdir -p $(brew --prefix zathura)/lib/zathura
 ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
 ```
 
-### Copying to clipboard
+## Copying to clipboard
 Add the following to your `~/.config/zathura/zathurarc`:
 ```sh
 set selection-clipboard clipboard
 ```
 Thanks to [geigi](https://github.com/geigi) (see [#5](https://github.com/zegervdv/homebrew-zathura/issues/5))
 
-### Operation not supported error
-
-If you are seeing errors like this:
+# Uninstall
+Homebrew will through errors unless you uninstall plugins before zathura.
 
 ```sh
-# error: Can not copy to temporary file: Operation not supported
+brew uninstall --force zathura-pdf-mupdf
+brew uninstall --ignore-dependencies --force girara
+brew uninstall zathura
 ```
 
-Try using an absolute path to the document:
+Optionally untap the repo 
+
 ```sh
-zathura document.pdf
-# error: Can not copy to temporary file: Operation not supported
-
-# Try:
-zathura /path/to/document.pdf
+brew unptap $(brew tap | grep zathura)
 ```
 
-## Known Issues
-Currently plugins are installed in the zathura folder, which means that uninstalling a plugin does not work.
-
-Work on frameless windows and an improved app bundle experience are coming in the future.
+## Roadmap
+- Frameless windows
+- Better app bundle and icon
+- More plugin support (CB and EPUP formats, full list [here](https://archlinux.org/packages/?q=zathura-))
