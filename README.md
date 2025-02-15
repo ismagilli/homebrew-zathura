@@ -41,7 +41,7 @@ set selection-clipboard clipboard
 Thanks to [geigi](https://github.com/geigi) (see [#5](https://github.com/zegervdv/homebrew-zathura/issues/5))
 
 # Uninstall
-Homebrew will through errors unless you uninstall plugins before zathura.
+Homebrew will throw errors unless you uninstall plugins before zathura.
 
 ```sh
 brew uninstall --force zathura-pdf-mupdf
