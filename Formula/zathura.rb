@@ -43,6 +43,13 @@ class Zathura < Formula
     end
   end
 
+  def caveats
+    <<~EOS
+      Zathrua is, by default, only a command line tool. To use it as an app with a .app file, run:
+        (curl https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/convert-into-app.sh | sh)
+      If this does not work, try downloading the script from the repo and running it manually.
+    EOS
+  end
   test do
     system "true" # TODO
   end

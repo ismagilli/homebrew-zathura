@@ -34,10 +34,10 @@ read -d '' info_plist <<- EOF
 EOF
 
 
-echo "$(info_plist)" > /Applications/Zathura.app/Contents/Info.plist
+echo $info_plist > /Applications/Zathura.app/Contents/Info.plist
 
 echo "Getting the icon"
-curl -o /Applications/Zathura.app/Contents/Resources/AppIcon.icns https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/icon/zathura-brosasaki.icns
+curl -o /Applications/Zathura.app/Contents/Resources/AppIcon.icns https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/132bb38829938ed8dfdd24f46946aab93f4482e5/icon/zathura-brosasaki.icns
 
 echo "Making it executable"
 chmod +x /Applications/Zathura.app/Contents/MacOS/zathura
