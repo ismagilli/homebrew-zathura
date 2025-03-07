@@ -2,7 +2,7 @@
 
 echo "This script will convert the zathura binary into a macOS App"
 
-[ -f /opt/homebrew/bin/zathura ] || { echo "zathura not found at /opt/homebrew/bin/zathura"; exit 1; }
+[[ -f /opt/homebrew/bin/zathura ]] || { echo "zathura not found at /opt/homebrew/bin/zathura"; exit 1; }
 
 echo "Creating /Applications/Zathura.app"
 mkdir -p /Applications/Zathura.app/Contents/MacOS
@@ -10,7 +10,8 @@ mkdir -p /Applications/Zathura.app/Contents/Resources
 cp /opt/homebrew/bin/zathura /Applications/Zathura.app/Contents/MacOS/zathura
 touch /Applications/Zathura.app/Contents/Info.plist
 
-echo "<?xml version="1.0" encoding="UTF-8"?>
+read -d '' info_plist <<- EOF
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
@@ -29,7 +30,11 @@ echo "<?xml version="1.0" encoding="UTF-8"?>
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
 </dict>
-</plist>" > /Applications/Zathura.app/Contents/Info.plist
+</plist>
+EOF
+
+
+echo "$(info_plist)" > /Applications/Zathura.app/Contents/Info.plist
 
 echo "Getting the icon"
 curl -o /Applications/Zathura.app/Contents/Resources/AppIcon.icns https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/icon/zathura-brosasaki.icns
