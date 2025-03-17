@@ -2,12 +2,13 @@
 
 echo "This script will convert the zathura binary into a macOS App"
 
-[[ -f /opt/homebrew/bin/zathura ]] || { echo "zathura not found at /opt/homebrew/bin/zathura"; exit 1; }
+ZATHURA_EXE=$(which zathura)
+[[ -f $ZATHURA_EXE ]] || { echo "zathura didn't find in \$PATH"; exit 1; }
 
 echo "Creating /Applications/Zathura.app"
 mkdir -p /Applications/Zathura.app/Contents/MacOS
 mkdir -p /Applications/Zathura.app/Contents/Resources
-cp /opt/homebrew/bin/zathura /Applications/Zathura.app/Contents/MacOS/zathura
+cp $ZATHURA_EXE /Applications/Zathura.app/Contents/MacOS/zathura
 touch /Applications/Zathura.app/Contents/Info.plist
 
 read -d '' info_plist <<- EOF
