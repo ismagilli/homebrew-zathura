@@ -2,13 +2,24 @@
 
 echo "This script will convert the zathura binary into a macOS App"
 
-ZATHURA_EXE=$(which zathura)
-[[ -f $ZATHURA_EXE ]] || { echo "zathura didn't find in \$PATH"; exit 1; }
+ZATHURA_EXE_DEFAULT="/opt/homebrew/bin/zathura"
+ZATHURA_EXE_FROM_PATH="$(command -v zathura)"
+
+if [[ -f "${ZATHURA_EXE_DEFAULT}" ]]; then
+    echo "zathura executable found at ${ZATHURA_EXE_DEFAULT}"
+    ZATHURA_EXE="${ZATHURA_EXE_DEFAULT}"
+elif [[ -f "${ZATHURA_EXE_FROM_PATH}" ]]; then
+    echo "zathura executable not found at ${ZATHURA_EXE_DEFAULT}; use ${ZATHURA_EXE_FROM_PATH} from \$PATH instead"
+    ZATHURA_EXE="${ZATHURA_EXE_FROM_PATH}"
+else
+    echo "zathura executable not found neither at ${ZATHURA_EXE_DEFAULT}, nor in \$PATH"
+    exit 1
+fi
 
 echo "Creating /Applications/Zathura.app"
 mkdir -p /Applications/Zathura.app/Contents/MacOS
 mkdir -p /Applications/Zathura.app/Contents/Resources
-cp $ZATHURA_EXE /Applications/Zathura.app/Contents/MacOS/zathura
+cp "${ZATHURA_EXE}" /Applications/Zathura.app/Contents/MacOS/zathura
 touch /Applications/Zathura.app/Contents/Info.plist
 
 read -d '' info_plist <<- EOF
