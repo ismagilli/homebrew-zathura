@@ -22,7 +22,7 @@ mkdir -p /Applications/Zathura.app/Contents/Resources
 cp "${ZATHURA_EXE}" /Applications/Zathura.app/Contents/MacOS/zathura
 touch /Applications/Zathura.app/Contents/Info.plist
 
-read -d '' info_plist <<- EOF
+read -r -d '' info_plist <<- EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -45,8 +45,7 @@ read -d '' info_plist <<- EOF
 </plist>
 EOF
 
-
-echo $info_plist > /Applications/Zathura.app/Contents/Info.plist
+echo "${info_plist}" > /Applications/Zathura.app/Contents/Info.plist
 
 echo "Getting the icon"
 curl -o /Applications/Zathura.app/Contents/Resources/AppIcon.icns https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/132bb38829938ed8dfdd24f46946aab93f4482e5/icon/zathura-brosasaki.icns
