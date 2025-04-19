@@ -11,7 +11,6 @@ class Zathura < Formula
     regex(/^v?(\d+(?:\.\d+)+)$/i)
   end
 
-  depends_on "cmake" => :build
   depends_on "meson" => :build
   depends_on "ninja" => :build
   depends_on "pkg-config" => :build
@@ -27,6 +26,11 @@ class Zathura < Formula
   on_macos do
     depends_on "gtk+3"
     depends_on "gtk-mac-integration"
+  end
+
+  patch do
+    url "file://#{__dir__}/../patches/mac-integration.diff"
+    sha256 "36aee71cd105f31817abdb96dbb9c4a9183c1f4d4a0d7dc3a3e8a31c6ebe3a2f"
   end
 
   def install
@@ -45,11 +49,20 @@ class Zathura < Formula
 
   def caveats
     <<~EOS
+      To view files you have to install plugins. Currently zathura has 5 official plugins:
+        zathura-cb             Comic Book Archive (.cbr, .cbz, .cbt, etc.)
+        zathura-djvu           DjVu (.djvu, .djv)
+        zathura-pdf-mupdf      PDF via MuPDF backend (.pdf)
+        zathura-pdf-poppler    PDF via Poppler backend (.pdf)
+        zathura-ps             PostScript (.ps)
+
       Zathrua is, by default, only a command line tool. To use it as an app with a .app file, run:
         (curl https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/convert-into-app.sh | sh)
       If this does not work, try downloading the script from the repo and running it manually.
+      Note: after installing new plugins you need to rerun command above.
     EOS
   end
+
   test do
     system "true" # TODO
   end
