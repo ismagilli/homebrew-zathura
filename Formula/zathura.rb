@@ -54,7 +54,7 @@ class Zathura < Formula
         zathura-djvu           DjVu (.djvu, .djv)
         zathura-pdf-mupdf      PDF via MuPDF backend (.pdf)
         zathura-pdf-poppler    PDF via Poppler backend (.pdf)
-        zathura-ps             PostScript (.ps)
+        zathura-ps             PostScript (.ps, .eps)
 
       Zathrua is, by default, only a command line tool. To use it as an app with a .app file, run:
         (curl https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/convert-into-app.sh | sh)

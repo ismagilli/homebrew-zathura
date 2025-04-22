@@ -15,6 +15,22 @@ If you want a comprehensive guide on installing zathura, check out [@ejmastnak](
 
 ---
 
+zathura uses a plugin based system for supported document types
+which means that you need install not only zathura itself,
+but at least one plugin. At this moment zathura has 5 official plugins:
+- `zathura-cb` for Comic Book Archive files (.cbr, .cbz, .cbt, etc.)
+- `zathura-djvu` for DjVu files (.djvu, .djv)
+- `zathura-pdf-mupdf` for PDF files (.pdf) via MuPDF backend
+- `zathura-pdf-poppler` for PDF files (.pdf) via Poppler backend
+- `zathura-ps` for PostScript files (.ps, .eps)
+
+To use zathura as PDF viewer you need either `zathura-pdf-mupdf`
+or `zathura-pdf-poppler` plugin. It is not recommended to install
+both plugins since zathura will use only one of them, and which
+one depends on the implementation and may change at any time.
+
+### Install zathura
+
 ```sh
 brew install zathura
 ```
@@ -24,22 +40,33 @@ brew install zathura
 brew install zathura --with-synctex
 ```
 
-### Install and link one of the two plugins
-In order to render PDFs, `zathura` requires either `mupdf` or `poppler`.
+### Install plugins
 
-For MuPDF:
+Install all required plugins. Note that `zathura` requires either
+`zathura-pdf-mupdf` or `zathura-pdf-poppler` plugin in order to
+render PDFs.
 ```sh
-brew install zathura-pdf-mupdf
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
+brew install [zathura-cb] [zathura-djvu] [zathura-pdf-mupdf] [zathura-pdf-poppler] [zathura-ps]
 ```
 
-For Poppler:
+After you install all required plugins you need to put them in
+a directory where zathura can find them. To do this, run the
+following command. You have to run this command only after
+installing new plugins.
 ```sh
-brew install zathura-pdf-poppler
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+plugin_dest=$(brew --prefix zathura)/lib/zathura ; mkdir -p $d ; for p in cb djvu pdf-mupdf pdf-poppler ps ; do plugin_path=$(brew --prefix zathura-$p)/lib$p.dylib ; [[ -f $plugin_path ]] && ln -s $plugin_path $d ; done
 ```
+
+### App bundle
+
+To use zathura as macOS application, run following command.
+You have to run this command after installing new plugins
+to add new plugin into bundle.
+```sh
+curl https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/convert-into-app.sh | sh
+```
+If this does not work, try downloading the script from the repo
+and running it manually.
 
 ## Copying to clipboard
 Add the following to your `~/.config/zathura/zathurarc`:
