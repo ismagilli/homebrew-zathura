@@ -6,8 +6,7 @@
 
 ZATHURA_EXE_DEFAULT="/opt/homebrew/bin/zathura"
 ZATHURA_APP="/Applications/Zathura.app"
-# ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/zathura-brosasaki.icns"
-ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/132bb38829938ed8dfdd24f46946aab93f4482e5/icon/zathura-brosasaki.icns"
+ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/zathura-brosasaki.icns"
 
 # TODO: add extensions for CB plugin and finish list for MUPDF plugin.
 # Those plugins support following MIME types (see $PLUGIN_NAME/plugin.c file):
