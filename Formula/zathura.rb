@@ -29,6 +29,11 @@ class Zathura < Formula
     depends_on "gtk-mac-integration"
   end
 
+  patch do
+    url "file://#{__dir__}/../patches/mac-integration.diff"
+    sha256 "6a0b6e6ab6852eb7ef775d6a0503defa36591889c16e8e07dae96ce7e0d60021"
+  end
+
   def install
     # Set Homebrew prefix
     ENV["PREFIX"] = prefix
