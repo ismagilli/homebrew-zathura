@@ -15,6 +15,21 @@ If you want a comprehensive guide on installing zathura, check out [@ejmastnak](
 
 ---
 
+zathura uses a plugin based system for supported document types
+which means that you need install not only zathura itself,
+but at least one plugin. At this moment zathura has 5 official plugins:
+- `zathura-cb` for Comic Book Archive files (.cbr, .cbz, .cbt, etc.)
+- `zathura-djvu` for DjVu files (.djvu, .djv)
+- `zathura-pdf-mupdf` for PDF files (.pdf) via MuPDF backend
+- `zathura-pdf-poppler` for PDF files (.pdf) via Poppler backend
+- `zathura-ps` for PostScript files (.ps, .eps)
+
+To use zathura as PDF viewer you need either `zathura-pdf-mupdf`
+or `zathura-pdf-poppler` plugin. It is not recommended to install
+both plugins since zathura will use only one of them, and which
+one depends on the implementation and may change at any time.
+
+### Install zathura
 ```sh
 brew install zathura
 ```
