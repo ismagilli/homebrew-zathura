@@ -39,21 +39,20 @@ brew install zathura
 brew install zathura --with-synctex
 ```
 
-### Install and link one of the two plugins
-In order to render PDFs, `zathura` requires either `mupdf` or `poppler`.
-
-For MuPDF:
+### Install plugins
+Install all required plugins. Note that `zathura` requires either
+`zathura-pdf-mupdf` or `zathura-pdf-poppler` plugin in order to
+render PDFs.
 ```sh
-brew install zathura-pdf-mupdf
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-mupdf)/libpdf-mupdf.dylib $(brew --prefix zathura)/lib/zathura/libpdf-mupdf.dylib
+brew install [zathura-cb] [zathura-djvu] [zathura-pdf-mupdf] [zathura-pdf-poppler] [zathura-ps]
 ```
 
-For Poppler:
+After you install all required plugins you need to put them in
+a directory where zathura can find them. To do this, run the
+following command. You have to run this command only after
+installing new plugins.
 ```sh
-brew install zathura-pdf-poppler
-mkdir -p $(brew --prefix zathura)/lib/zathura
-ln -s $(brew --prefix zathura-pdf-poppler)/libpdf-poppler.dylib $(brew --prefix zathura)/lib/zathura/libpdf-poppler.dylib
+d=$(brew --prefix zathura)/lib/zathura ; mkdir -p $d ; for n in cb djvu pdf-mupdf pdf-poppler ps ; do p=$(brew --prefix zathura-$n)/lib$n.dylib ; [[ -f $p ]] && ln -s $p $d ; done
 ```
 
 ## Copying to clipboard
