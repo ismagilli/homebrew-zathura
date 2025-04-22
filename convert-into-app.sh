@@ -8,22 +8,83 @@ ZATHURA_EXE_DEFAULT="/opt/homebrew/bin/zathura"
 ZATHURA_APP="/Applications/Zathura.app"
 ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/132bb38829938ed8dfdd24f46946aab93f4482e5/icon/zathura-brosasaki.icns"
 
+########################
+### Helper functions ###
+########################
+
+COLOR_RESET="\033[0m"
+COLOR_RED="\033[31m"
+COLOR_YELLOW="\033[33m"
+COLOR_GRAY="\033[90m"
+
+# @param1 level name (error|warn|info|debug)
+# @param2 message
+__log() {
+  level=$1
+  message=$2
+
+  case ${level} in
+    error)
+      color=${COLOR_RED}
+      prefix="ERROR"
+      ;;
+    warn)
+      color=${COLOR_YELLOW}
+      prefix="WARN"
+      ;;
+    info)
+      color=""
+      prefix="INFO"
+      ;;
+    debug)
+      color=${COLOR_GRAY}
+      prefix="DEBUG"
+      ;;
+    *)
+      color=""
+      prefix="UNKNOWN"
+      ;;
+  esac
+
+  echo -e "${color}[${prefix}] ${message}${COLOR_RESET}" 1>&2
+}
+
+# @param1 message
+debug() {
+  __log debug "$*"
+}
+
+# @param1 message
+info() {
+  __log info "$*"
+}
+
+# @param1 message
+warn() {
+  __log warn "$*"
+}
+
+# @param1 message
+error() {
+  __log error "$*"
+}
+
 #######################
 ### Find executable ###
 #######################
 
-echo "Finding executable..."
+debug "Finding executable..."
 
 ZATHURA_EXE_FROM_PATH=$(command -v zathura)
 
 if [[ -f ${ZATHURA_EXE_DEFAULT} ]]
 then
-  echo "zathura executable found at ${ZATHURA_EXE_DEFAULT}"
+  info "zathura executable found at ${ZATHURA_EXE_DEFAULT}"
   ZATHURA_EXE=${ZATHURA_EXE_DEFAULT}
 elif [[ -f ${ZATHURA_EXE_FROM_PATH} ]]
 then
-  echo "zathura executable not found at default location (${ZATHURA_EXE_DEFAULT});"
-  echo "use ${ZATHURA_EXE_FROM_PATH} from \$PATH instead"
+  warn "zathura executable not found at default location (${ZATHURA_EXE_DEFAULT});"
+  warn "use ${ZATHURA_EXE_FROM_PATH} from \$PATH instead"
   ZATHURA_EXE=${ZATHURA_EXE_FROM_PATH}
 else
   echo "zathura executable not found neither at ${ZATHURA_EXE_DEFAULT}, nor in \$PATH"
@@ -34,7 +95,7 @@ fi
 ### Create app structure ###
 ############################
 
-echo "Creating app structure..."
+debug "Creating app structure..."
 
 mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources"
 
@@ -42,7 +103,7 @@ mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources"
 ### Copy executable ###
 #######################
 
-echo "Copying executable..."
+debug "Copying executable..."
 
 cp "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 
@@ -50,7 +111,7 @@ cp "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 ### Create Info.plist ###
 #########################
 
-echo "Creating Info.plist..."
+debug "Creating Info.plist..."
 
 read -r -d '' info_plist <<-EOF
 <?xml version="1.0" encoding="UTF-8"?>
@@ -81,7 +142,7 @@ echo "${info_plist}" >"${ZATHURA_APP}/Contents/Info.plist"
 ### Download the icon ###
 #########################
 
-echo "Downloading the icon..."
+debug "Downloading the icon..."
 
 curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" "${ZATHURA_ICON_URL}"
 
@@ -89,7 +150,7 @@ curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" "${ZATHURA_ICON_URL}"
 ### Caveats ###
 ###############
 
-echo "Caveats..."
+debug "Caveats..."
 
 cat <<EOF
 Now you can run the app by double clicking on it.
