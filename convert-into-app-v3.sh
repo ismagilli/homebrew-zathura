@@ -36,11 +36,11 @@ __log() {
 
   case ${level} in
     error)
-      color="${COLOR_RED}"
+      color=${COLOR_RED}
       prefix="ERROR"
       ;;
     warn)
-      color="${COLOR_YELLOW}"
+      color=${COLOR_YELLOW}
       prefix="WARN"
       ;;
     info)
@@ -48,7 +48,7 @@ __log() {
       prefix="INFO"
       ;;
     debug)
-      color="${COLOR_GRAY}"
+      color=${COLOR_GRAY}
       prefix="DEBUG"
       ;;
     *)
@@ -62,22 +62,22 @@ __log() {
 
 # @param1 message
 debug() {
-  __log debug "$@"
+  __log debug "$*"
 }
 
 # @param1 message
 info() {
-  __log info "$@"
+  __log info "$*"
 }
 
 # @param1 message
 warn() {
-  __log warn "$@"
+  __log warn "$*"
 }
 
 # @param1 message
 error() {
-  __log error "$@"
+  __log error "$*"
 }
 
 #######################
@@ -86,12 +86,12 @@ error() {
 
 debug "Finding executable..."
 
-ZATHURA_EXE_FROM_PATH="$(command -v zathura)"
+ZATHURA_EXE_FROM_PATH=$(command -v zathura)
 
 if [[ -f ${ZATHURA_EXE_DEFAULT} ]]
 then
   info "zathura executable found at ${ZATHURA_EXE_DEFAULT}"
-  ZATHURA_EXE="${ZATHURA_EXE_DEFAULT}"
+  ZATHURA_EXE=${ZATHURA_EXE_DEFAULT}
 elif [[ -f ${ZATHURA_EXE_FROM_PATH} ]]
 then
   warn "zathura executable not found at default location (${ZATHURA_EXE_DEFAULT});"
@@ -118,7 +118,7 @@ find_plugin() {
   if [[ -f ${plugin_path} ]]
   then
     info "zathura-${plugin} plugin found"
-    echo "${plugin_path}"
+    echo ${plugin_path}
   fi
 }
 
@@ -128,14 +128,14 @@ MUPDF_PLUGIN=$(find_plugin pdf-mupdf)
 POPPLER_PLUGIN=$(find_plugin pdf-poppler)
 PS_PLUGIN=$(find_plugin ps)
 
-if [[ -z "${CB_PLUGIN}${DJVU_PLUGIN}${MUPDF_PLUGIN}${POPPLER_PLUGIN}${PS_PLUGIN}" ]]
+if [[ -z ${CB_PLUGIN}${DJVU_PLUGIN}${MUPDF_PLUGIN}${POPPLER_PLUGIN}${PS_PLUGIN} ]]
 then
   error "No plugins have been found. Please install at least one plugin and try again."
   error "List of official plugins: zathura-{cb,djvu,pdf-mupdf,pdf-poppler,ps}."
   exit 1
 fi
 
-if [[ -n "${MUPDF_PLUGIN}" && -n "${POPPLER_PLUGIN}" ]]
+if [[ -n ${MUPDF_PLUGIN} && -n ${POPPLER_PLUGIN} ]]
 then
   warn "zathura-pdf-mupdf and zathura-pdf-poppler are installed simultaneously."
   warn "It is recommended to delete one of them."
@@ -172,18 +172,18 @@ add_plugin() {
   path=$1
   exts=$2
 
-  if [[ -f "${path}" ]]
+  if [[ -f ${path} ]]
   then
-    ln -s "${path}" "${ZATHURA_APP}/Contents/Resources/plugins"
+    ln -s ${path} "${ZATHURA_APP}/Contents/Resources/plugins"
     ZATHURA_SUPPORTED_EXTS="${ZATHURA_SUPPORTED_EXTS} ${exts}"
   fi
 }
 
-add_plugin "${CB_PLUGIN}" "${ZATHURA_CB_EXTS}"
-add_plugin "${DJVU_PLUGIN}" "${ZATHURA_DJVU_EXTS}"
-add_plugin "${MUPDF_PLUGIN}" "${ZATHURA_MUPDF_EXTS}"
-add_plugin "${POPPLER_PLUGIN}" "${ZATHURA_POPPLER_EXTS}"
-add_plugin "${PS_PLUGIN}" "${ZATHURA_PS_EXTS}"
+add_plugin ${CB_PLUGIN} ${ZATHURA_CB_EXTS}
+add_plugin ${DJVU_PLUGIN} ${ZATHURA_DJVU_EXTS}
+add_plugin ${MUPDF_PLUGIN} ${ZATHURA_MUPDF_EXTS}
+add_plugin ${POPPLER_PLUGIN} ${ZATHURA_POPPLER_EXTS}
+add_plugin ${PS_PLUGIN} ${ZATHURA_PS_EXTS}
 
 #########################
 ### Create Info.plist ###
@@ -200,7 +200,7 @@ ZATHURA_VER=$(
 )
 # shellcheck disable=SC2312
 ZATHURA_SUPPORTED_EXTS_XML=$(
-  echo "${ZATHURA_SUPPORTED_EXTS:1}" |
+  echo ${ZATHURA_SUPPORTED_EXTS:1} |
     xargs -n1 -I% echo "        <string>%</string>"
 )
 CURRENT_YEAR=$(date +%Y)
@@ -258,7 +258,7 @@ ${ZATHURA_SUPPORTED_EXTS_XML}
 </plist>
 EOF
 
-debug "${info_plist}" >"${ZATHURA_APP}/Contents/Info.plist"
+echo ${info_plist} >"${ZATHURA_APP}/Contents/Info.plist"
 
 ######################
 ### Download image ###
@@ -266,7 +266,7 @@ debug "${info_plist}" >"${ZATHURA_APP}/Contents/Info.plist"
 
 debug "Downloading image..."
 
-curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" "${ZATHURA_ICON_URL}"
+curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" ${ZATHURA_ICON_URL}
 
 ###############
 ### Caveats ###
