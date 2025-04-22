@@ -157,5 +157,5 @@ Now you can run the app by double clicking on it.
 
 Next steps:
 To change the icon, follow the README.md in the repo.
-You will notice that when Zathura opens, no file is showing. To open a file, type \`:open <path to file>\` while within zathura, or \`zathura open example.pdf\` from the command line. Pressing <Tab> will show recent files that the viewer has opened
+You will notice that when Zathura opens, no file is showing. To open a file, type \`:open <path to file>\` while within zathura, or \`zathura example.pdf\` from the command line. Pressing <Tab> will show recent files that the viewer has opened
 EOF
