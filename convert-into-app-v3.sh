@@ -109,7 +109,7 @@ fi
 debug "Finding installed plugins..."
 
 # @param1 plugin name without zathura- prefix
-find_plugin () {
+find_plugin() {
   plugin=$1
 
   plugin_prefix=$(brew --prefix "zathura-${plugin}" 2>/dev/null)
@@ -168,9 +168,9 @@ ZATHURA_SUPPORTED_EXTS=""
 
 # @param1 plugin's .dylib path
 # @param2 plugin supported extensions
-add_plugin () {
-  path="$1"
-  exts="$2"
+add_plugin() {
+  path=$1
+  exts=$2
 
   if [[ -f "${path}" ]]
   then
@@ -196,7 +196,7 @@ debug "Creating Info.plist..."
 ZATHURA_VER=$(
   ${ZATHURA_EXE} --version |
     head -n1 |
-    cut -d ' '  -f2
+    cut -d ' ' -f2
 )
 # shellcheck disable=SC2312
 ZATHURA_SUPPORTED_EXTS_XML=$(
