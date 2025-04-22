@@ -118,7 +118,7 @@ find_plugin() {
   if [[ -f ${plugin_path} ]]
   then
     info "zathura-${plugin} plugin found"
-    echo ${plugin_path}
+    echo "${plugin_path}"
   fi
 }
 
@@ -174,16 +174,16 @@ add_plugin() {
 
   if [[ -f ${path} ]]
   then
-    ln -s ${path} "${ZATHURA_APP}/Contents/Resources/plugins"
+    ln -s "${path}" "${ZATHURA_APP}/Contents/Resources/plugins"
     ZATHURA_SUPPORTED_EXTS="${ZATHURA_SUPPORTED_EXTS} ${exts}"
   fi
 }
 
-add_plugin ${CB_PLUGIN} ${ZATHURA_CB_EXTS}
-add_plugin ${DJVU_PLUGIN} ${ZATHURA_DJVU_EXTS}
-add_plugin ${MUPDF_PLUGIN} ${ZATHURA_MUPDF_EXTS}
-add_plugin ${POPPLER_PLUGIN} ${ZATHURA_POPPLER_EXTS}
-add_plugin ${PS_PLUGIN} ${ZATHURA_PS_EXTS}
+add_plugin "${CB_PLUGIN}" "${ZATHURA_CB_EXTS}"
+add_plugin "${DJVU_PLUGIN}" "${ZATHURA_DJVU_EXTS}"
+add_plugin "${MUPDF_PLUGIN}" "${ZATHURA_MUPDF_EXTS}"
+add_plugin "${POPPLER_PLUGIN}" "${ZATHURA_POPPLER_EXTS}"
+add_plugin "${PS_PLUGIN}" "${ZATHURA_PS_EXTS}"
 
 #########################
 ### Create Info.plist ###
@@ -200,7 +200,7 @@ ZATHURA_VER=$(
 )
 # shellcheck disable=SC2312
 ZATHURA_SUPPORTED_EXTS_XML=$(
-  echo ${ZATHURA_SUPPORTED_EXTS:1} |
+  echo "${ZATHURA_SUPPORTED_EXTS:1}" |
     xargs -n1 -I% echo "        <string>%</string>"
 )
 CURRENT_YEAR=$(date +%Y)
@@ -258,7 +258,7 @@ ${ZATHURA_SUPPORTED_EXTS_XML}
 </plist>
 EOF
 
-echo ${info_plist} >"${ZATHURA_APP}/Contents/Info.plist"
+echo "${info_plist}" >"${ZATHURA_APP}/Contents/Info.plist"
 
 ######################
 ### Download image ###
@@ -266,7 +266,7 @@ echo ${info_plist} >"${ZATHURA_APP}/Contents/Info.plist"
 
 debug "Downloading image..."
 
-curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" ${ZATHURA_ICON_URL}
+curl -o "${ZATHURA_APP}/Contents/Resources/AppIcon.icns" "${ZATHURA_ICON_URL}"
 
 ###############
 ### Caveats ###
