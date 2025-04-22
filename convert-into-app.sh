@@ -113,6 +113,14 @@ cp "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 
 debug "Creating Info.plist..."
 
+# SC2312 (info): Consider invoking this command separately to avoid masking its return value (or use '|| true' to ignore).
+# shellcheck disable=SC2312
+ZATHURA_VER=$(
+  ${ZATHURA_EXE} --version |
+    head -n1 |
+    cut -d ' ' -f2
+)
+CURRENT_YEAR=$(date +%Y)
 read -r -d '' info_plist <<-EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -128,7 +136,13 @@ read -r -d '' info_plist <<-EOF
     <string>com.pwmt.zathura</string>
 
     <key>CFBundleVersion</key>
-    <string>1.0</string>
+    <string>${ZATHURA_VER}</string>
+
+    <key>CFBundleGetInfoString</key>
+    <string>zathura, a highly customizable and functional document viewer. Visit https://pwmt.org/projects/zathura for details.</string>
+
+    <key>NSHumanReadableCopyright</key>
+    <string>Copyright (c) 2009-${CURRENT_YEAR}, pwmt.org</string>
 
     <key>CFBundleDocumentTypes</key>
     <array>
