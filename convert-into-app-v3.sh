@@ -34,12 +34,27 @@ __log() {
   level=$1
   message=$2
 
-  case $level in
-    error) color="${COLOR_RED}"    ; prefix="ERROR"   ;;
-    warn)  color="${COLOR_YELLOW}" ; prefix="WARN"    ;;
-    info)  color=""                ; prefix="INFO"    ;;
-    debug) color="${COLOR_GRAY}"   ; prefix="DEBUG"   ;;
-    *)     color=""                ; prefix="UNKNOWN" ;;
+  case ${level} in
+    error)
+      color="${COLOR_RED}"
+      prefix="ERROR"
+      ;;
+    warn)
+      color="${COLOR_YELLOW}"
+      prefix="WARN"
+      ;;
+    info)
+      color=""
+      prefix="INFO"
+      ;;
+    debug)
+      color="${COLOR_GRAY}"
+      prefix="DEBUG"
+      ;;
+    *)
+      color=""
+      prefix="UNKNOWN"
+      ;;
   esac
 
   echo -e "${color}[${prefix}] ${message}${COLOR_RESET}" 1>&2
@@ -73,15 +88,15 @@ debug "Finding executable..."
 
 ZATHURA_EXE_FROM_PATH="$(command -v zathura)"
 
-if [[ -f "${ZATHURA_EXE_DEFAULT}" ]]
+if [[ -f ${ZATHURA_EXE_DEFAULT} ]]
 then
   info "zathura executable found at ${ZATHURA_EXE_DEFAULT}"
   ZATHURA_EXE="${ZATHURA_EXE_DEFAULT}"
-elif [[ -f "${ZATHURA_EXE_FROM_PATH}" ]]
+elif [[ -f ${ZATHURA_EXE_FROM_PATH} ]]
 then
   warn "zathura executable not found at default location (${ZATHURA_EXE_DEFAULT});"
   warn "use ${ZATHURA_EXE_FROM_PATH} from \$PATH instead"
-  ZATHURA_EXE="${ZATHURA_EXE_FROM_PATH}"
+  ZATHURA_EXE=${ZATHURA_EXE_FROM_PATH}
 else
   error "zathura executable not found neither at ${ZATHURA_EXE_DEFAULT}, nor in \$PATH"
   exit 1
@@ -95,12 +110,12 @@ debug "Finding installed plugins..."
 
 # @param1 plugin name without zathura- prefix
 find_plugin () {
-  plugin="$1"
+  plugin=$1
 
   plugin_prefix=$(brew --prefix "zathura-${plugin}" 2>/dev/null)
   plugin_path="${plugin_prefix}/lib${plugin}.dylib"
 
-  if [[ -f "${plugin_path}" ]]
+  if [[ -f ${plugin_path} ]]
   then
     info "zathura-${plugin} plugin found"
     echo "${plugin_path}"
