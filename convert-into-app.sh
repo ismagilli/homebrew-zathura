@@ -8,6 +8,12 @@ ZATHURA_EXE_DEFAULT="/opt/homebrew/bin/zathura"
 ZATHURA_APP="/Applications/Zathura.app"
 ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/zathura-brosasaki.icns"
 
+ZATHURA_CB_EXTS="cbr cbz cbt cba cb7"
+ZATHURA_DJVU_EXTS="djvu djv"
+ZATHURA_MUPDF_EXTS="pdf mobi"
+ZATHURA_POPPLER_EXTS="pdf"
+ZATHURA_PS_EXTS="ps eps"
+
 ########################
 ### Helper functions ###
 ########################
@@ -91,6 +97,43 @@ else
   exit 1
 fi
 
+##############################
+### Find installed plugins ###
+##############################
+
+debug "Finding installed plugins..."
+
+# @param1 plugin name without zathura- prefix
+find_plugin() {
+  plugin_prefix=$(brew --prefix "zathura-$1" 2>/dev/null)
+  plugin_path="${plugin_prefix}/lib$1.dylib"
+
+  if [[ -f ${plugin_path} ]]
+  then
+    info "zathura-$1 plugin found"
+    echo "${plugin_path}"
+  fi
+}
+
+CB_PLUGIN=$(find_plugin cb)
+DJVU_PLUGIN=$(find_plugin djvu)
+MUPDF_PLUGIN=$(find_plugin pdf-mupdf)
+POPPLER_PLUGIN=$(find_plugin pdf-poppler)
+PS_PLUGIN=$(find_plugin ps)
+
+if [[ -z ${CB_PLUGIN}${DJVU_PLUGIN}${MUPDF_PLUGIN}${POPPLER_PLUGIN}${PS_PLUGIN} ]]
+then
+  error "No plugins have been found. Please install at least one plugin and try again."
+  error "List of official plugins: zathura-{cb,djvu,pdf-mupdf,pdf-poppler,ps}."
+  exit 1
+fi
+
+if [[ -n ${MUPDF_PLUGIN} && -n ${POPPLER_PLUGIN} ]]
+then
+  warn "zathura-pdf-mupdf and zathura-pdf-poppler are installed simultaneously."
+  warn "It is recommended to delete one of them."
+fi
+
 ############################
 ### Create app structure ###
 ############################
@@ -107,6 +150,29 @@ debug "Copying executable..."
 
 cp -f "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 
+###############################
+### Form list of extensions ###
+###############################
+
+debug "Forming list of extensions..."
+
+# Note: This variable will have an extra space symbol at the beginning.
+ZATHURA_SUPPORTED_EXTS=""
+
+# @param1 plugin's .dylib path
+# @param2 plugin supported extensions
+add_exts_from_plugin() {
+  [[ -f $1 ]] && ZATHURA_SUPPORTED_EXTS="${ZATHURA_SUPPORTED_EXTS} $2"
+}
+
+add_exts_from_plugin "${CB_PLUGIN}" "${ZATHURA_CB_EXTS}"
+add_exts_from_plugin "${DJVU_PLUGIN}" "${ZATHURA_DJVU_EXTS}"
+add_exts_from_plugin "${MUPDF_PLUGIN}" "${ZATHURA_MUPDF_EXTS}"
+add_exts_from_plugin "${POPPLER_PLUGIN}" "${ZATHURA_POPPLER_EXTS}"
+add_exts_from_plugin "${PS_PLUGIN}" "${ZATHURA_PS_EXTS}"
+
+info "Following extensions will be added: ${ZATHURA_SUPPORTED_EXTS:1}"
+
 #########################
 ### Create Info.plist ###
 #########################
@@ -119,6 +185,11 @@ ZATHURA_VER=$(
   ${ZATHURA_EXE} --version |
     head -n1 |
     cut -d ' ' -f2
+)
+# shellcheck disable=SC2312
+ZATHURA_SUPPORTED_EXTS_XML=$(
+  echo "${ZATHURA_SUPPORTED_EXTS:1}" |
+    xargs -n1 -I% echo "              <string>%</string>"
 )
 CURRENT_YEAR=$(date +%Y)
 read -r -d '' info_plist <<-EOF
@@ -149,7 +220,7 @@ read -r -d '' info_plist <<-EOF
         <dict>
           <key>CFBundleTypeExtensions</key>
           <array>
-              <string>pdf</string>
+${ZATHURA_SUPPORTED_EXTS_XML}
           </array>
 
           <key>CFBundleTypeIconFile</key>
