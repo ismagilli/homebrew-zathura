@@ -17,7 +17,7 @@ ZATHURA_CB_EXTS=""
 ZATHURA_DJVU_EXTS="djvu djv"
 ZATHURA_MUPDF_EXTS="pdf"
 ZATHURA_POPPLER_EXTS="pdf"
-ZATHRUA_PS_EXTS="ps eps"
+ZATHURA_PS_EXTS="ps eps"
 
 ########################
 ### Helper functions ###
@@ -25,31 +25,44 @@ ZATHRUA_PS_EXTS="ps eps"
 
 COLOR_RESET="\033[0m"
 COLOR_RED="\033[31m"
-COLOR_GREEN="\033[32m"
 COLOR_YELLOW="\033[33m"
 COLOR_GRAY="\033[90m"
 
-# @param1 level name
-# @param2 level color
-# @param3 message
+# @param1 level name (error|warn|info|debug)
+# @param2 message
 __log() {
-  echo -e "$2[$1] $3${COLOR_RESET}" 1>&2
+  level=$1
+  message=$2
+
+  case $level in
+    error) color="${COLOR_RED}"    ; prefix="ERROR"   ;;
+    warn)  color="${COLOR_YELLOW}" ; prefix="WARN"    ;;
+    info)  color=""                ; prefix="INFO"    ;;
+    debug) color="${COLOR_GRAY}"   ; prefix="DEBUG"   ;;
+    *)     color=""                ; prefix="UNKNOWN" ;;
+  esac
+
+  echo -e "${color}[${prefix}] ${message}${COLOR_RESET}" 1>&2
 }
 
+# @param1 message
 debug() {
-  __log "DEBUG" "${COLOR_GRAY}" "$@"
+  __log debug "$@"
 }
 
+# @param1 message
 info() {
-  __log "INFO" "" "$@"
+  __log info "$@"
 }
 
+# @param1 message
 warn() {
-  __log "WARNING" "${COLOR_YELLOW}" "$@"
+  __log warn "$@"
 }
 
+# @param1 message
 error() {
-  __log "ERROR" "${COLOR_RED}" "$@"
+  __log error "$@"
 }
 
 #######################
