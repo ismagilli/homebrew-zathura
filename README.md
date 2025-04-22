@@ -55,6 +55,16 @@ installing new plugins.
 d=$(brew --prefix zathura)/lib/zathura ; mkdir -p $d ; for n in cb djvu pdf-mupdf pdf-poppler ps ; do p=$(brew --prefix zathura-$n)/lib$n.dylib ; [[ -f $p ]] && ln -s $p $d ; done
 ```
 
+### App bundle
+To use zathura as macOS application, run following command.
+You have to run this command each time you're installing new
+plugins to update bundle info.
+```sh
+curl https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/convert-into-app.sh | sh
+```
+If this does not work, try downloading the script from the repo
+and running it manually.
+
 ## Copying to clipboard
 Add the following to your `~/.config/zathura/zathurarc`:
 ```sh
