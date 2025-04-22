@@ -120,16 +120,41 @@ read -r -d '' info_plist <<-EOF
 <dict>
     <key>CFBundleName</key>
     <string>Zathura</string>
+
     <key>CFBundleDisplayName</key>
     <string>Zathura</string>
+
     <key>CFBundleIdentifier</key>
     <string>com.pwmt.zathura</string>
+
     <key>CFBundleVersion</key>
     <string>1.0</string>
+
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+          <key>CFBundleTypeExtensions</key>
+          <array>
+              <string>pdf</string>
+          </array>
+
+          <key>CFBundleTypeIconFile</key>
+          <string>AppIcon</string>
+
+          <key>CFBundleTypeName</key>
+          <string>Documents</string>
+
+          <key>CFBundleTypeRole</key>
+          <string>Viewer</string>
+        </dict>
+    </array>
+
     <key>CFBundleExecutable</key>
     <string>zathura</string>
+
     <key>CFBundlePackageType</key>
     <string>APPL</string>
+
     <key>CFBundleIconFile</key>
     <string>AppIcon</string>
 </dict>
