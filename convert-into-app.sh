@@ -4,7 +4,6 @@
 ### Definitions ###
 ###################
 
-ZATHURA_EXE_DEFAULT="/opt/homebrew/bin/zathura"
 ZATHURA_APP="/Applications/Zathura.app"
 ZATHURA_ICON_URL="https://raw.githubusercontent.com/homebrew-zathura/homebrew-zathura/refs/heads/master/zathura-brosasaki.icns"
 
@@ -81,6 +80,7 @@ error() {
 
 debug "Finding executable..."
 
+ZATHURA_EXE_DEFAULT="$(brew --prefix zathura)/bin/zathura"
 ZATHURA_EXE_FROM_PATH=$(command -v zathura)
 
 if [[ -f ${ZATHURA_EXE_DEFAULT} ]]
