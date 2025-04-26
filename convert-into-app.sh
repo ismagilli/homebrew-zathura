@@ -148,7 +148,7 @@ mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources/plug
 
 debug "Symlinking executable..."
 
-ln -s "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
+ln -sf "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 
 #######################
 ### Symlink plugins ###
@@ -157,7 +157,7 @@ ln -s "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 debug "Symlinking plugins..."
 
 symlink_plugin() {
-  [[ -f $1 ]] && ln -s "$1" "${ZATHURA_APP}/Contents/Resources/plugins"
+  [[ -f $1 ]] && ln -sf "$1" "${ZATHURA_APP}/Contents/Resources/plugins"
 }
 
 symlink_plugin "${CB_PLUGIN}"
