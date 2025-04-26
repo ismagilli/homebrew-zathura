@@ -31,10 +31,10 @@ index a1300c7..006a492 100644
    sources,
 diff --git a/zathura/mac-integration.c b/zathura/mac-integration.c
 new file mode 100644
-index 0000000..b4751fe
+index 0000000..5ff15fc
 --- /dev/null
 +++ b/zathura/mac-integration.c
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,75 @@
 +/* SPDX-License-Identifier: Zlib */
 +
 +#include <girara/log.h>
@@ -48,15 +48,41 @@ index 0000000..b4751fe
 +#include "zathura.h"
 +
 +
++static gboolean is_inside_bundle(void);
++static void load_plugins_from_bundle(zathura_t* zathura);
 +static gboolean openfile_callback(GtkosxApplication* app, gchar* path, zathura_t* zathura);
 +
 +
 +void zathura_mac_init(zathura_t* zathura) {
++  if (is_inside_bundle()) {
++    load_plugins_from_bundle(zathura);
++  }
++
 +  GtkosxApplication* zathura_mac = g_object_new(GTKOSX_TYPE_APPLICATION, NULL);
 +  gtkosx_application_set_use_quartz_accelerators(zathura_mac, FALSE);
 +  gtkosx_application_ready(zathura_mac);
 +
 +  g_signal_connect(G_OBJECT(zathura_mac), "NSApplicationOpenFile", G_CALLBACK(openfile_callback), zathura);
++}
++
++static gboolean is_inside_bundle(void) {
++  gchar* id = gtkosx_application_get_bundle_id();
++  gboolean result = id != NULL;
++  g_free(id);
++  return result;
++}
++
++static void load_plugins_from_bundle(zathura_t* zathura) {
++  zathura_plugin_manager_t* plugin_manager = zathura->plugins.manager;
++
++  gchar* resource_path = gtkosx_application_get_resource_path();
++  gchar* plugins_path = g_build_path("/", resource_path, "plugins", NULL);
++
++  zathura_plugin_manager_set_dir(plugin_manager, plugins_path);
++  zathura_plugin_manager_load(plugin_manager);
++
++  g_free(resource_path);
++  g_free(plugins_path);
 +}
 +
 +static gboolean openfile_callback(GtkosxApplication* UNUSED(app), gchar* path, zathura_t* zathura) {

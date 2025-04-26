@@ -140,7 +140,7 @@ fi
 
 debug "Creating app structure..."
 
-mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources"
+mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources/plugins"
 
 ##########################
 ### Symlink executable ###
@@ -149,6 +149,22 @@ mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources"
 debug "Symlinking executable..."
 
 ln -s "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
+
+#######################
+### Symlink plugins ###
+#######################
+
+debug "Symlinking plugins..."
+
+symlink_plugin() {
+  [[ -f $1 ]] && ln -s "$1" "${ZATHURA_APP}/Contents/Resources/plugins"
+}
+
+symlink_plugin "${CB_PLUGIN}"
+symlink_plugin "${DJVU_PLUGIN}"
+symlink_plugin "${MUPDF_PLUGIN}"
+symlink_plugin "${POPPLER_PLUGIN}"
+symlink_plugin "${PS_PLUGIN}"
 
 ###############################
 ### Form list of extensions ###
