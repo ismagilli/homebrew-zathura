@@ -142,13 +142,13 @@ debug "Creating app structure..."
 
 mkdir -p "${ZATHURA_APP}/Contents/MacOS" "${ZATHURA_APP}/Contents/Resources"
 
-#######################
-### Copy executable ###
-#######################
+##########################
+### Symlink executable ###
+##########################
 
-debug "Copying executable..."
+debug "Symlinking executable..."
 
-cp "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
+ln -s "${ZATHURA_EXE}" "${ZATHURA_APP}/Contents/MacOS/zathura"
 
 ###############################
 ### Form list of extensions ###
