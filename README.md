@@ -8,9 +8,6 @@ brew tap homebrew-zathura/zathura
 
 ## Install zathura
 
-> [!warning]
-> While using the guide below, please do not use the `--HEAD` flag while installing Zathura.
-
 If you want a comprehensive guide on installing zathura, check out [@ejmastnak](https://github.com/ejmastnak)'s guide [here](https://ejmastnak.com/tutorials/vim-latex/pdf-reader/#zathura-macos)
 
 ---
